@@ -18,7 +18,7 @@ builder.Services.AddDbContext<SiteDeQuadrinhosDBContex>(
     );
 
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-
+builder.Services.AddScoped<IQuadrinhoRepositorio, QuadrinhoRepositorio>();
 
 var app = builder.Build();
 

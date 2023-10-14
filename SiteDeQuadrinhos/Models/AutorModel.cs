@@ -3,15 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SiteDeQuadrinhos.Models
 {
-    public class QuadrinhoModel
+    public class AutorModel
     {
         [Key()]
         public Guid Id { get; set; }
-        public string? Nome { get; set; }
-        public string? Descricao { get; set; }
-        public string? TagPrincipal { get; set; }
-        public byte[] Capitulo { get; set; }
-        public byte[] Capa { get; set; }
+        public string Documento { get; set; }
+        public DateTime DataDeNascimento { get; set; }
         [ForeignKey("UsuarioModel")]
         public Guid UsuarioId { get; set; }
         public virtual UsuarioModel usuarioModel { get; set; }
