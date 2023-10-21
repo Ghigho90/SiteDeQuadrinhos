@@ -9,9 +9,10 @@ namespace SiteDeQuadrinhos.Data.Map
         public void Configure(EntityTypeBuilder<AutorModel> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Documento).IsRequired().HasMaxLength(255);
+            builder.HasIndex(x => x.Documento).IsUnique();
             builder.Property(x => x.DataDeNascimento).IsRequired();
             builder.Property(x => x.UsuarioId).IsRequired();
+            builder.HasOne(x => x.usuarioModel).WithOne(x => x.Autor).HasForeignKey<AutorModel>(x => x.UsuarioId).IsRequired();
         }
     }
 }

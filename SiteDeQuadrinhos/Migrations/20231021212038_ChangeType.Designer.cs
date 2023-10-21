@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteDeQuadrinhos.Data;
 
@@ -10,9 +11,10 @@ using SiteDeQuadrinhos.Data;
 namespace SiteDeQuadrinhos.Migrations
 {
     [DbContext(typeof(SiteDeQuadrinhosDBContex))]
-    partial class SiteDeQuadrinhosDBContexModelSnapshot : ModelSnapshot
+    [Migration("20231021212038_ChangeType")]
+    partial class ChangeType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

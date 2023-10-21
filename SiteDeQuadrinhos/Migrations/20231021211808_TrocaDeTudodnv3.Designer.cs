@@ -11,8 +11,8 @@ using SiteDeQuadrinhos.Data;
 namespace SiteDeQuadrinhos.Migrations
 {
     [DbContext(typeof(SiteDeQuadrinhosDBContex))]
-    [Migration("20231014185627_TabelasNovas")]
-    partial class TabelasNovas
+    [Migration("20231021211808_TrocaDeTudodnv3")]
+    partial class TrocaDeTudodnv3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,12 +38,10 @@ namespace SiteDeQuadrinhos.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("usuarioModelId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("usuarioModelId");
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Autor");
                 });
@@ -62,14 +60,38 @@ namespace SiteDeQuadrinhos.Migrations
                     b.Property<Guid>("QuadrinhoId")
                         .HasColumnType("char(36)");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuadrinhoId");
+
+                    b.ToTable("Capitulo");
+                });
+
+            modelBuilder.Entity("SiteDeQuadrinhos.Models.FavoritoModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("QuadrinhoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("quadrinhoModelId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("usuarioModelId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("quadrinhoModelId");
 
-                    b.ToTable("Capitulo");
+                    b.HasIndex("usuarioModelId");
+
+                    b.ToTable("FavoritoModel");
                 });
 
             modelBuilder.Entity("SiteDeQuadrinhos.Models.PaginaModel", b =>
@@ -85,12 +107,9 @@ namespace SiteDeQuadrinhos.Migrations
                         .IsRequired()
                         .HasColumnType("longblob");
 
-                    b.Property<Guid>("capituloModelId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("capituloModelId");
+                    b.HasIndex("CapituloId");
 
                     b.ToTable("Pagina");
                 });
@@ -102,10 +121,6 @@ namespace SiteDeQuadrinhos.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<byte[]>("Capa")
-                        .IsRequired()
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Capitulo")
                         .IsRequired()
                         .HasColumnType("longblob");
 
@@ -127,12 +142,9 @@ namespace SiteDeQuadrinhos.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("usuarioModelId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("usuarioModelId");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Quadrinhos");
                 });
@@ -144,9 +156,7 @@ namespace SiteDeQuadrinhos.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -154,8 +164,6 @@ namespace SiteDeQuadrinhos.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("NomeDeUsuario")
-                        .IsRequired()
-                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Senha")
@@ -165,16 +173,20 @@ namespace SiteDeQuadrinhos.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("NomeDeUsuario")
+                        .IsUnique();
+
                     b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("SiteDeQuadrinhos.Models.AutorModel", b =>
                 {
                     b.HasOne("SiteDeQuadrinhos.Models.UsuarioModel", "usuarioModel")
-                        .WithMany()
-                        .HasForeignKey("usuarioModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("Autor")
+                        .HasForeignKey("SiteDeQuadrinhos.Models.AutorModel", "UsuarioId");
 
                     b.Navigation("usuarioModel");
                 });
@@ -182,21 +194,36 @@ namespace SiteDeQuadrinhos.Migrations
             modelBuilder.Entity("SiteDeQuadrinhos.Models.CapituloModel", b =>
                 {
                     b.HasOne("SiteDeQuadrinhos.Models.QuadrinhoModel", "quadrinhoModel")
-                        .WithMany()
+                        .WithMany("CapituloModel")
+                        .HasForeignKey("QuadrinhoId");
+
+                    b.Navigation("quadrinhoModel");
+                });
+
+            modelBuilder.Entity("SiteDeQuadrinhos.Models.FavoritoModel", b =>
+                {
+                    b.HasOne("SiteDeQuadrinhos.Models.QuadrinhoModel", "quadrinhoModel")
+                        .WithMany("favoritosList")
                         .HasForeignKey("quadrinhoModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SiteDeQuadrinhos.Models.UsuarioModel", "usuarioModel")
+                        .WithMany("favoritoList")
+                        .HasForeignKey("usuarioModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("quadrinhoModel");
+
+                    b.Navigation("usuarioModel");
                 });
 
             modelBuilder.Entity("SiteDeQuadrinhos.Models.PaginaModel", b =>
                 {
                     b.HasOne("SiteDeQuadrinhos.Models.CapituloModel", "capituloModel")
-                        .WithMany()
-                        .HasForeignKey("capituloModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("PaginaModel")
+                        .HasForeignKey("CapituloId");
 
                     b.Navigation("capituloModel");
                 });
@@ -204,12 +231,31 @@ namespace SiteDeQuadrinhos.Migrations
             modelBuilder.Entity("SiteDeQuadrinhos.Models.QuadrinhoModel", b =>
                 {
                     b.HasOne("SiteDeQuadrinhos.Models.UsuarioModel", "usuarioModel")
-                        .WithMany()
-                        .HasForeignKey("usuarioModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Quadrinhos")
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("usuarioModel");
+                });
+
+            modelBuilder.Entity("SiteDeQuadrinhos.Models.CapituloModel", b =>
+                {
+                    b.Navigation("PaginaModel");
+                });
+
+            modelBuilder.Entity("SiteDeQuadrinhos.Models.QuadrinhoModel", b =>
+                {
+                    b.Navigation("CapituloModel");
+
+                    b.Navigation("favoritosList");
+                });
+
+            modelBuilder.Entity("SiteDeQuadrinhos.Models.UsuarioModel", b =>
+                {
+                    b.Navigation("Autor");
+
+                    b.Navigation("Quadrinhos");
+
+                    b.Navigation("favoritoList");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,10 +6,8 @@ namespace SiteDeQuadrinhos.Models
 {
     public class PaginaModel
     {
-        [Key()]
         public Guid Id { get; set; }
         public byte[] Pagina { get; set; }
-        [ForeignKey("CapituloModel")]
         public Guid CapituloId { get; set; }
         public virtual CapituloModel capituloModel { get; set; }
     }

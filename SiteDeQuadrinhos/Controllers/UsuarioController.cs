@@ -17,7 +17,7 @@ namespace SiteDeQuadrinhos.Controllers
             _usuarioRepositorio = usuarioRepositorio;
         }
         [HttpPost]
-        public async Task <ActionResult<UsuarioModel>> Cadastrar([FromForm] UsuarioModel usuarioModel)
+        public async Task <ActionResult<UsuarioModel>> Cadastrar([FromBody] UsuarioModel usuarioModel)
         {
            UsuarioModel usuario = await _usuarioRepositorio.Adicionar(usuarioModel);
 

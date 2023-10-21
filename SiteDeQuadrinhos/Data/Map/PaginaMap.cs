@@ -11,6 +11,7 @@ namespace SiteDeQuadrinhos.Data.Map
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Pagina).IsRequired();
             builder.Property(x => x.CapituloId).IsRequired();
+            builder.HasOne(x => x.capituloModel).WithMany(x => x.PaginaModel).HasForeignKey(x => x.CapituloId).IsRequired(false);
         }
     }
 }

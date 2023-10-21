@@ -22,6 +22,7 @@ namespace SiteDeQuadrinhos.Data
             modelBuilder.ApplyConfiguration(new CapituloMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new QuadrinhoMap());
+            
             base.OnModelCreating(modelBuilder);
         }
     }
