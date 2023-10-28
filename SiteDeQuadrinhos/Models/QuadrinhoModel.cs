@@ -12,7 +12,7 @@ namespace SiteDeQuadrinhos.Models
         public string? Descricao { get; set; }
         public string? TagPrincipal { get; set; }
         public byte[] Capa { get; set; } = new byte[0];
-        public Guid UsuarioId { get; set; }
+        public string? UsuarioId { get; set; }
         [JsonIgnore]
         public UsuarioModel? usuarioModel { get; set; }
         public ICollection<CapituloModel> CapituloModel { get; set; }
