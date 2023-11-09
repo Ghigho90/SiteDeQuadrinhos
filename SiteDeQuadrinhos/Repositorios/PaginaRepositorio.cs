@@ -54,5 +54,14 @@ namespace SiteDeQuadrinhos.Repositorios
         {
             return await _dbContext.Pagina.ToListAsync();
         }
+
+        public async Task<bool> UploadImagem(byte[] imagem, Guid Id)
+        {
+            PaginaModel paginaPorId = await BuscarPorId(Id);
+            paginaPorId.Pagina = imagem;
+            _dbContext.Pagina.Update(paginaPorId);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

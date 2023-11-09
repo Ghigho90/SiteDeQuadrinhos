@@ -9,5 +9,6 @@ namespace SiteDeQuadrinhos.Repositorios.Interfaces
         Task<PaginaModel> Adicionar(PaginaModel pagina);
         Task<PaginaModel> Atualizar(PaginaModel pagina, Guid id);
         Task<bool> Apagar(Guid id);
+        Task<bool> UploadImagem(byte[] imagem, Guid id);
     }
 }

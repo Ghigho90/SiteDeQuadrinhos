@@ -23,5 +23,31 @@ namespace SiteDeQuadrinhos.Controllers
 
             return Ok(usuario);
         }
+        [HttpGet("TodosUsuarios")]
+        public async Task<ActionResult<List<UsuarioModel>>> ListarTodosOsUsuarios()
+        {
+            List<UsuarioModel> usuario = await _usuarioRepositorio.BuscarTodosUsuarios();
+            return Ok(usuario);
+        }
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<UsuarioModel>> BuscarPorId(Guid id)
+        {
+            UsuarioModel usuario = await _usuarioRepositorio.BuscarPorId(id);
+            return Ok(usuario);
+        }
+        [HttpPut("{Id}")]
+        public async Task<ActionResult<UsuarioModel>> Atualizar(UsuarioModel usuarioModel, Guid id)
+        {
+            usuarioModel.Id = id;
+            UsuarioModel usuario = await _usuarioRepositorio.Atualizar(usuarioModel, id);
+            return Ok(usuario);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<UsuarioModel>> Apagar(Guid id)
+        {
+            bool apagado = await _usuarioRepositorio.Apagar(id);
+            return Ok(apagado);
+        }
     }
 }

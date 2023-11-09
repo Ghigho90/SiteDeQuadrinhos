@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SiteDeQuadrinhos.Data;
 using SiteDeQuadrinhos.Models;
 using SiteDeQuadrinhos.Repositorios;

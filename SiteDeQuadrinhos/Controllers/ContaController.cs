@@ -22,7 +22,7 @@ namespace SiteDeQuadrinhos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel login)
+        public async Task<ActionResult> Login(LoginModel login)
         {
             var user = await _userManager.FindByEmailAsync(login.Email);
 
@@ -37,6 +37,28 @@ namespace SiteDeQuadrinhos.Controllers
                         return Ok(result);
                     }
                 }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("Registro")]
+        public async Task<ActionResult> Registro(RegistroModel registro)
+        {
+            var user = await _userManager.FindByEmailAsync(registro.Email);
+            if(user != null)
+            {
+                throw new Exception("O Email informado já existe");
+            }
+            var newUser = new UsuarioModel()
+            {
+                Email = registro.Email,
+                Nome = registro.Nome,
+                NomeDeUsuario = registro.NomeDeUsuario,
+            };
+            var newUserResponse = _userManager.CreateAsync(newUser, registro.Senha);
+            if (newUserResponse.IsCompletedSuccessfully)
+            {
+                return Ok(newUser);
             }
             return BadRequest();
         }
